@@ -13,6 +13,5 @@ for i in range(c):
             honor.append(j)
     honor_rate = (len(honor) / student) * 100
     print('%.3f'%honor_rate+'%')
-
-    
+# print 할때 fstring
     
