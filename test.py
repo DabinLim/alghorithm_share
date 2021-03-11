@@ -1,58 +1,45 @@
-#6조 강상구의 코드
-import sys 
-from collections import deque
+# 6조 조상균의 코드
+import sys
 
-x_move = [0,0,-1,1]     #4방향 확인을 위해 설정함
-y_move = [-1,1,0,0]
+# 입력
+n = int(sys.stdin.readline())
+arr = list(map(int, sys.stdin.readline().split()))
 
-t_width,t_height = map(int, sys.stdin.readline().split());  #토마토 상자의 폭과 너비 ok
-#토마토 정보를 받기
-lines = [list(map(int, sys.stdin.readline().split())) for _ in range(t_height)]; ok
-start = []
-temp_q = deque()  #popleft를 사용하기 위해 deque 사용
-find_start(t_width,t_height,lines); #익은 토마토 위치 확인
+# 이전 기록 저장
+result = [1] * n #숫자 위치에 따른 최대 증가수열 길이를 저장하는 배열, 이전 값 활용을 위한 DP
 
-#익은 토마토의 위치를 찾아 큐에 넣어주기
-def find_start(t_width,t_height,lines):
-    global temp_q
-    for i in range(0,t_height):
-        for j in range(0,t_width):
-            if lines[i][j] == 1:                
-                start= [i,j];
-                temp_q.append(start);    
-    return
+for i in range(n): # 기준점이 되는 반복문
+        for j in range(i): # 비교 대상이 되는 반복문
+                #만약 기준 대상(i)이 비교대상(j)보다 크고 비교대상의 증가수열(result)이 더 긴 경우
+                if arr[j] < arr[i] and result[i] <= result[j]:
+                                result[i] = result[j] + 1 #해당 숫자 위치의 증가수열 결과로 저장
 
-#토마토가 익어 가는 함수
-def go_tomato():        
-    while temp_q: #큐에 익은 토마토 시작 지점이 없어질때까지 
-        x,y = temp_q.popleft()        #토마토 위치 가져오기 
-        for i in range(4):            #익은 토마토 위치 기준 4방향 확인
-            next_x = x + x_move[i];                
-            next_y = y + y_move[i];
-               
-            if 0<= next_x < t_height and 0<= next_y < t_width : #토마토 상자를 벗어나지 않아야함
-                if lines[next_x][next_y] == 0 : #익지 않았으면 
-                    lines[next_x][next_y] = lines[x][y] +1;   #영향을 준 토마토의 날짜에 1을 더해서 값을 변경
-                    temp_q.append([next_x,next_y])       #이번에 익은 토마토의 위치를 큐에 저장
-    return                     
-       
-x_move = [0,0,-1,1]     #4방향 확인을 위해 설정함
-y_move = [-1,1,0,0]
+print(max(result))
 
-t_width,t_height = map(int, sys.stdin.readline().split());  #토마토 상자의 폭과 너비
-#토마토 정보를 받기
-lines = [list(map(int, sys.stdin.readline().split())) for _ in range(t_height)];
-start = []
-temp_q = deque()  #popleft를 사용하기 위해 deque 사용
-find_start(t_width,t_height,lines); #익은 토마토 위치 확인
-if temp_q == False :  #익은 토마토가 없으면 0을 출력
-    print(0)
-else : 
-    go_tomato()  #토마토를 익히기
-    day = max(map(max,lines)) -1   #첫날 익은 토마토의 시작 값이 1이었기때문에 제일 오래 걸린 날짜에서 -1 
-    for i in range(0,t_height):    #익지 않은 토마토가 있으면 -1을 출력하고 종료
-        for j in range(0,t_width):
-            if lines[i][j] == 0:
-                print(-1)
-                exit()
-    print(day)                     #모두 익었으면 걸린 날짜를 출력
+##### 설명 ######
+# 예시로 6개 수열 10 30 20 40 50 30 이 들어왔을 때
+# 결과를 담는 result 배열도 1  1  1  1  1  1로 세팅되어 있습니다.
+# 1. 10(i:0)은 처음이기에 앞에 숫자가 없어 10까지의 최대 증가 수열은 1입니다.
+#                j는 range(0)이기 때문에 돌지 않습니다. result[0]은 그대로 1
+# 2. 30(i:1)은 range(1)이기 때문에 j:0으로 한번 반복하며 arr[0]인 10과 비교합니다.
+#                30이 더 크므로 arr[0]의 결과인 result[0]을 살펴보고 같거나 크므로 1을 증가시킨 값인 2를 result[1]에 저장합니다.
+# 현재 result는 1 2 1 1 1 1 !!!!
+# 3. 20(i:2)은 j in range(2)이기 때문에 반복문을 통해 arr[0](10)과 arr[1](30)을 살펴보게 됩니다.
+#                반복 중 현재 기준인 20과 비교 대상인 10(j:0)을 비교하고 result도 같기 때문에
+#                 10의 결과(result[0])1을 증가한 값을 20의 결과(result[2]=2)로 저장합니다.
+# 4. 40(i:3)을 기준으로 배열의 앞인 10, 30, 20과 비교를 합니다.
+#                10(j:0)과 비교 후 result[3](40의 결과) = result[0](10의 결과) + 1 => (2)를 저장하고
+#                30(j:1)과 비교 후 result[3](40의 결과) = result[1](30의 결과) + 1 => (3)으로 저장(교체)하고
+#                20(j:2)과 비교하지만 뒷 부분의 조건(result[i:3](=3) < result[2](=2))에 걸려 실행되지 않습니다.
+# 현재 result는 1 2 2 3 1 1 !!!!
+# 5. 50(i:4)을 기준으로 배열의 앞인 10, 30, 20, 40과 비교를 합니다.
+#                4번의 아래와 동일한 과정을 거치고 40(j:3)과 비교를 합니다.
+#                기준인 50과 40을 비교할 때 더 크고 result[4](=3)와 과 result[3](=3)비교하여 같거나 큰 조건에 해당하므로
+#                result[4]에 result[3](=3) + 1인 4를 담습니다.
+# 현재 result는 1 2 2 3 4 1 !!!!
+# 6. 30(i:5)은 또 10 30 20 40 50과 비교합니다.
+#                30은 30보다 작은 10(j:0)과 20(j:2)만 조건에 걸릴 것 입니다.
+#                result[5]에는 10(j:0)의 결과값 1에 +1인 2가 저장되고 20(j:2)의 결과값 2에서 +1된 3이 저장될 것 입니다..
+# !최종적으로 result는 1 2 2 3 4 3 !!!!
+# 여기서 가장 긴 수열은 4에 해당하므로 4가 출력되어야 합니다. (10 20 40 50 또는 10 30 40 50)
+
