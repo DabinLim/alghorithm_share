@@ -30,7 +30,7 @@ def ripe_tomato():
             next_x = x + x_move[i]
             next_y = y + y_move[i]
 
-            if 0<= next_x < box_h and 0<= next_y <box_w:
+            if 0<= next_x < box_h and 0<= next_y <box_w: 
                 if tomatos[next_x][next_y] == 0:
                     tomatos[next_x][next_y] = tomatos[x][y] +1;
                     
@@ -57,3 +57,4 @@ else:
                 exit()
     print(day)
                 
+

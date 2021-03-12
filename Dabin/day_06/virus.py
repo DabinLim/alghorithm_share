@@ -1,7 +1,7 @@
 n = int(input())
 m = int(input())
 
-graph = dict()  # 노드들의 인접 리스트를 저장할 공간
+graph = dict()  # 노드들의 인접 리스트를 저장할 공간       
 virus_list = [] # 감염된 컴퓨터들을 저장할 공간
 
 for i in range(1, n+1):  # 컴퓨터 수 만큼 빈 리스트 생성

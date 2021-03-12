@@ -22,3 +22,9 @@ for i in range(n):
 print(max(count))
 
 # print(max(count))
+
+# 10 - 30 - 20 - 30 - 50
+
+#count = [1, 2, 2, 3, 4, 3]
+
+#count = [1, 1, 2, 2, 4]
