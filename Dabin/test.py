@@ -1,2 +1,3 @@
-a, b, c = map(int, input().split())
-print(a, b, c)
+dp = [[[0 for _ in range(3)] for _ in range(3)] for _ in range(3)]
+
+print(dp)
