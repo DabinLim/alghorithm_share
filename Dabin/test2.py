@@ -1,28 +1,39 @@
-MAX = 21
-dp = [[[0]*MAX for _ in range(MAX)] for __ in range(MAX)]
- 
-def w(a, b, c) :
-    if a<=0 or b<=0 or c<=0 :
-        return 1
-    if a>20 or b>20 or c>20 :
-        return w(20, 20, 20)
- 
-    # 값이 이미 존재한다면 그 값을 바로 리턴.
-    if dp[a][b][c]:
-        return dp[a][b][c]
- 
-    if a<b<c :
-        dp[a][b][c] = w(a,b,c-1) + w(a,b-1,c-1) - w(a,b-1,c)
-        return dp[a][b][c]
- 
-    dp[a][b][c] = w(a-1,b,c) + w(a-1,b-1,c) + w(a-1,b,c-1) - w(a-1,b-1,c-1)
-    return dp[a][b][c]
- 
-while True :
- 
-    a, b, c = map(int, input().split())
- 
-    if a== -1 and b==-1 and c==-1 :
-        break
- 
-    print(f'w({a}, {b}, {c}) = {w(a,b,c)}')
+import sys
+from collections import deque
+
+n = int(sys.stdin.readline())
+queue_list = deque()
+
+for i in range(n):
+    command = sys.stdin.readline().split()
+
+    if command[0] == 'push':
+        queue_list.append(int(command[1]))
+
+    elif command[0] == 'front':
+        if len(queue_list) == 0:
+            print(-1) 
+        else:
+            print(queue_list[0])
+
+    elif command[0] == 'back':
+        if len(queue_list) == 0:
+            print(-1)
+        else:
+            print(queue_list[-1])
+
+    elif command == 'size':
+        print(len(queue_list))
+
+    elif command == 'empty':
+        if len(queue_list) == 0:
+            print(1) 
+        else:
+            print(0) 
+    elif command == 'pop':
+        if len(queue_list) == 0:
+            print(-1) 
+        else:
+            print(queue_list.popleft())
+
+

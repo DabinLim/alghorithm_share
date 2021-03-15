@@ -2,9 +2,6 @@ import sys
 from collections import deque
 
 n = int(input())
-command_list = []
-for i in range(n):
-    command_list.append(list(map(str, sys.stdin.readline().split())))
 
 def queue(command, a):
     global queue_list
@@ -37,12 +34,13 @@ def queue(command, a):
         else:
             return queue_list.popleft()
 
-
 queue_list = deque()
 
-for i in command_list:
-    if len(i) > 1:
-        queue(i[0],i[1])
+for i in range(n):         
+    a = list(sys.stdin.readline().split())
+    if len(a) > 1:
+        queue(a[0],a[1])
     else:
-        print(queue(i[0], 0))
+        print(queue(a[0], 0))
+
 
