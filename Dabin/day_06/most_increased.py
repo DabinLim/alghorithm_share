@@ -17,8 +17,8 @@ sequence = list(map(int, input().split()))
 count = [1]*n
 for i in range(n):
     for j in range(i):
-        if sequence[i] > sequence[j] and count[j] >= count[i]:
-            count[i] += 1
+        if sequence[i] > sequence[j]:
+            count[i] = max(count[i],count[j]+1) 
 print(max(count))
 
 # print(max(count))
